@@ -16,12 +16,12 @@ from vehicle import Vehicle
 
 class ParkingLot():
     # Atributos
-    max_lots = None # int
-    hourly_rate = None # float
-    min_rate = None # float
-    manager_mail = None # str
-    max_minutes = None # int
-    lots = None # dict (llave: int, valor: Vehicle)
+    max_lots = None      # int
+    hourly_rate = None   # float
+    min_rate = None      # float
+    manager_mail = None  # str
+    max_minutes = None   # int
+    lots = None          # dict (llave: int, valor: Vehicle)
 
     # Metodo constructor
     def __init__(self):
@@ -32,7 +32,11 @@ class ParkingLot():
         self.max_minutes = 1
         self.lots = dict()
 
-    # F: Obtiene int de max_lots
+#############
+#  methods  #
+#############
+
+# F: Obtiene int de max_lots
     # I: Self - Instancia de ParkingLot
     # O: Int de max_lots
     def getMaxLots(self) -> int:
@@ -147,18 +151,6 @@ class ParkingLot():
     # O:
     def getEstimatedEarnings() -> float:
         pass # TO DO: Pasar funcion a cajero
-
-#############
-# variables #
-#############
-
-
-
-#############
-# functions #
-#############
-
-
 
 ################
 # main program #

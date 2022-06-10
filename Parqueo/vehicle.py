@@ -29,6 +29,10 @@ class Vehicle():
         self.entryTime = entryTime
         self.lotID = lotID
 
+#############
+#  methods  #
+#############
+
     # F: Obtiene str de plate
     # I: Self - Instancia de Vehicle
     # O: Str de plate
@@ -74,18 +78,6 @@ class Vehicle():
     # O: Int de lotID
     def getLotID(self) -> int:
         return self.lotID
-
-#############
-# variables #
-#############
-
-
-
-#############
-# functions #
-#############
-
-
 
 ################
 # main program #
