@@ -8,7 +8,7 @@
 # modules #
 ###########
 
-from vehicle import Vehicle
+from Vehicle import Vehicle
 
 ###########
 # classes #
@@ -147,10 +147,15 @@ class ParkingLot():
         return None
 
     # F:
-    # I:
+    # I:    vehicleList (Vehiculos que no han pagado)
+    #       estimatedTime (float de tiempo a calcular)
     # O:
     def getEstimatedEarnings() -> float:
         pass # TO DO: Pasar funcion a cajero
+
+    # Crear metodos para lo siguiente:
+    #   Metodo iterativo que obtiene listado de vehiculos
+    #   que no han pagado
 
 ################
 # main program #

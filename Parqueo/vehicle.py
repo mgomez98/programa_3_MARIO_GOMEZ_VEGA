@@ -79,6 +79,9 @@ class Vehicle():
     def getLotID(self) -> int:
         return self.lotID
 
+    # Crear metodos para identificar...
+    #   paytime == None: Vehiculo no ha pagado
+
 ################
 # main program #
 ################
