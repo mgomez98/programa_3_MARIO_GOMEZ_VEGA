@@ -29,6 +29,30 @@ class Vehicle():
         self.entryTime = entryTime
         self.lotID = lotID
 
+    # Metodo serializador (json)
+    def to_dict(self):
+        if isinstance(self, Vehicle):
+            dict = {
+                "plate": self.plate,
+                "entryTime": self.entryTime,
+                "payTime": self.payTime,
+                "exitTime": self.exitTime,
+                "billing": self.billing,
+                "lotID": self.lotID
+            }
+            return dict
+        else:
+            return None
+
+    # Metodo deserializador
+    @classmethod
+    def from_dict(cls, dict):
+        vehicle = Vehicle(dict["plate"], dict["entryTime"], dict["lotID"])
+        vehicle.payTime = dict["payTime"]
+        vehicle.exitTime = dict["exitTime"]
+        vehicle.billing = dict["billing"]
+        return vehicle
+
 #############
 #  methods  #
 #############

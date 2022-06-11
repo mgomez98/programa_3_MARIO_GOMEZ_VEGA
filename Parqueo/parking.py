@@ -22,6 +22,7 @@ class ParkingLot():
     manager_mail = None  # str
     max_minutes = None   # int
     lots = None          # dict (llave: int, valor: Vehicle)
+    log = None           # list <historial de uso>
 
     # Metodo constructor
     def __init__(self):
@@ -31,6 +32,53 @@ class ParkingLot():
         self.manager_mail = ""
         self.max_minutes = 1
         self.lots = dict()
+        self.log = list()
+
+    # Metodo serializador (json)
+    def to_dict(self):
+        if isinstance(self, ParkingLot):
+            self.list_to_dict()
+            dict = {
+                "max_lots": self.max_lots,
+                "hourly_rate": self.hourly_rate,
+                "min_rate": self.min_rate,
+                "manager_mail": self.manager_mail,
+                "max_minutes": self.max_minutes,
+                "lots": self.lots,
+                "log": self.log
+            }
+            return dict
+        else:
+            return None
+
+    # Metodo list, dict <vehicle> -> list, dict <dictionary>
+    def list_to_dict(self):
+        for key in self.lots.keys():
+            self.lots[key] = (self.lots[key]).to_dict()
+        for i, vehicle in enumerate(self.log):
+            self.log[i] = vehicle.to_dict()
+
+    # Metodo list, dict <dictionary> -> list, dict <vehicle>
+    def dict_to_list(self):
+        for key in self.lots.keys():
+            dictVehicle = self.lots[key]
+            self.lots[key] = Vehicle.from_dict(dictVehicle)
+        for i, vehicle in enumerate(self.log):
+            self.log[i] = Vehicle.from_dict(vehicle)
+
+    # Metodo deserializador (json)
+    @classmethod
+    def from_dict(cls, dict):
+        parking = ParkingLot()
+        parking.max_lots = dict["max_lots"]
+        parking.hourly_rate = dict["hourly_rate"]
+        parking.min_rate = dict["min_rate"]
+        parking.manager_mail = dict["manager_mail"]
+        parking.max_minutes = dict["max_minutes"]
+        parking.lots = dict["lots"]
+        parking.log = dict["log"]
+        parking.dict_to_list()
+        return parking
 
 #############
 #  methods  #
@@ -134,6 +182,7 @@ class ParkingLot():
     # O: N/a
     def removeVehicle(self, vehicle: Vehicle):
         lotID = vehicle.getLotID()
+        self.log.append(self.lots[lotID])
         del self.lots[lotID]
 
     # F: Encuentra una instancia de Vehicle en el parqueo

@@ -24,6 +24,41 @@ class CashRegister():
         self.initCoins([0, 0, 0])
         self.initBills([0, 0, 0, 0, 0])
 
+    # Metodo serializador (json)
+    def to_dict(self):
+        if isinstance(self, CashRegister):
+            self.list_to_dict()
+            dict = {
+                "coins": self.coins,
+                "bills": self.bills
+            }
+            return dict
+        else:
+            return None
+
+    # Metodo list <denomination> -> list <dictionary>
+    def list_to_dict(self):
+        for i, coin in enumerate(self.coins):
+            self.coins[i] = coin.to_dict()
+        for i, bill in enumerate(self.bills):
+            self.bills[i] = bill.to_dict()
+
+    # Metodo list <dictionary> -> list <denomination>
+    def dict_to_list(self):
+        for i, coin in enumerate(self.coins):
+            self.coins[i] = Denomination.from_dict(coin)
+        for i, bill in enumerate(self.bills):
+            self.bills[i] = Denomination.from_dict(bill)
+
+    # Metodo deserializador (json)
+    @classmethod
+    def from_dict(cls, dict):
+        register = CashRegister()
+        register.coins = dict["coins"]
+        register.bills = dict["bills"]
+        register.dict_to_list()
+        return register
+
 #############
 #  methods  #
 #############
@@ -32,19 +67,19 @@ class CashRegister():
     # I: values: lista de ints
     # O: N/a
     def initCoins(self, values: list):
-        coins = []
+        self.coins = []
         for value in values:
             coin = Denomination(value)
-            coins.append(coin)
+            self.coins.append(coin)
 
     # F: Inicializa lista bills
     # I: values: lista de int
     # O: N/a
     def initBills(self, values: list):
-        bills = []
+        self.bills = []
         for value in values:
             bill = Denomination(value)
-            bills.append(bill)
+            self.bills.append(bill)
 
     # F: Getter de coins
     # I: N/a

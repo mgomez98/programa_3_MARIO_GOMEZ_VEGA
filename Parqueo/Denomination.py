@@ -26,6 +26,26 @@ class Denomination():
         self.amountInputs = 0
         self.amountOutputs = 0
 
+    # Metodo serializador (json)
+    def to_dict(self):
+        if isinstance(self, Denomination):
+            dict = {
+                "value": self.value,
+                "amountInputs": self.amountInputs,
+                "amountOutputs": self.amountOutputs
+            }
+            return dict
+        else:
+            return None
+        
+    # Metodo deserializador
+    @classmethod
+    def from_dict(cls, dict):
+        denomination = Denomination(dict["value"])
+        denomination.amountInputs = dict["amountInputs"]
+        denomination.amountOutputs = dict["amountOutputs"]
+        return denomination
+
 #############
 #  methods  #
 #############
