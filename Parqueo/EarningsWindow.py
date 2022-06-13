@@ -1,5 +1,5 @@
 ##################
-#Earnings.py
+#EarningsWindow.py
 #Date of creation: 7/6/22
 #Author: Mario Gomez Vega
 ##################
@@ -14,7 +14,7 @@ import tkinter as tk
 # classes #
 ###########
 
-class Earnings():
+class EarningsWindow():
     # Ventana y widgets
     root = None              # Tkinter toplevel
     fromDate = None          # Entry inicio fecha
@@ -112,4 +112,3 @@ class Earnings():
 # main program #
 ################
 
-window = Earnings()

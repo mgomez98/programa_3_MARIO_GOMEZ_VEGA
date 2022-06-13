@@ -1,5 +1,5 @@
 ##################
-#AddVehicle.py
+#EntryWindow.py
 #Date of creation: 10/06/22
 #Author: Mario Gomez Vega
 ##################
@@ -14,7 +14,7 @@ import tkinter as tk
 # classes #
 ###########
 
-class AddVehicle():
+class EntryWindow():
     # Ventana y widgets
     root = None        # Tkinter toplevel
 
@@ -110,4 +110,3 @@ class AddVehicle():
 # main program #
 ################
 
-window = AddVehicle()

@@ -1,5 +1,5 @@
 ##################
-#Config.py
+#ConfigWindow.py
 #Date of creation: 4/6/22
 #Author: Mario Gomez Vega
 ##################
@@ -9,12 +9,19 @@
 ###########
 
 import tkinter as tk
+from CashRegister import CashRegister
+
+from ParkingLot import ParkingLot
 
 ###########
 # classes #
 ###########
 
-class Config():
+class ConfigWindow():
+
+    # Logica Parqueo
+    refParking = None  # Instancia ParkingLot
+    refRegister = None  # Instancia CashRegister
 
     # Ventana y widgets
     root = None      # Tkinter toplevel
@@ -61,11 +68,16 @@ class Config():
     btnOk = None      # Boton Ok
     btnCancel = None  # Boton Cancelar
 
-    def __init__(self):
+    def __init__(self, parent, parking: ParkingLot, register: CashRegister):
+        # Recibe logica de ventana principal
+        self.refParking = parking
+        self.refRegister = register
+
         # Ventana configuracion
-        self.root = tk.Tk()
-        self.root.geometry('530x550')
+        self.root = tk.Toplevel(parent)
+        self.root.geometry('600x550')
         self.root.title('Configuracion')
+        self.root.focus_set()
 
         # Frame texto
         self.frmText = tk.Frame(self.root, height=600)
@@ -95,22 +107,23 @@ class Config():
         self.lblBill4 = tk.Label(self.frmText, text='Billete 4, denominación siguiente a la anterior (ejemplo 10000)', anchor='w')
         self.lblBill5 = tk.Label(self.frmText, text='Billete 5, denominación siguiente a la anterior (ejemplo 20000)', anchor='w')
 
-        # Entries
-        self.entLots = tk.Entry(self.frmEntry)
-        self.entHourly = tk.Entry(self.frmEntry)
-        self.entMin = tk.Entry(self.frmEntry)
-        self.entMail = tk.Entry(self.frmEntry)
-        self.entMinutes = tk.Entry(self.frmEntry)
+        # Entries parqueo
+        self.entLots = tk.Entry(self.frmEntry, justify='right', width=7)
+        self.entHourly = tk.Entry(self.frmEntry, justify='right', width=10)
+        self.entMin = tk.Entry(self.frmEntry, justify='right', width=10)
+        self.entMail = tk.Entry(self.frmEntry, justify='right', width=30)
+        self.entMinutes = tk.Entry(self.frmEntry, justify='right', width=7)
 
-        self.entCoin1 = tk.Entry(self.frmEntry)
-        self.entCoin2 = tk.Entry(self.frmEntry)
-        self.entCoin3 = tk.Entry(self.frmEntry)
+        # Entries cajero
+        self.entCoin1 = tk.Entry(self.frmEntry, justify='right', width=7)
+        self.entCoin2 = tk.Entry(self.frmEntry, justify='right', width=7)
+        self.entCoin3 = tk.Entry(self.frmEntry, justify='right', width=7)
 
-        self.entBill1 = tk.Entry(self.frmEntry)
-        self.entBill2 = tk.Entry(self.frmEntry)
-        self.entBill3 = tk.Entry(self.frmEntry)
-        self.entBill4 = tk.Entry(self.frmEntry)
-        self.entBill5 = tk.Entry(self.frmEntry)
+        self.entBill1 = tk.Entry(self.frmEntry, justify='right', width=7)
+        self.entBill2 = tk.Entry(self.frmEntry, justify='right', width=7)
+        self.entBill3 = tk.Entry(self.frmEntry, justify='right', width=7)
+        self.entBill4 = tk.Entry(self.frmEntry, justify='right', width=7)
+        self.entBill5 = tk.Entry(self.frmEntry, justify='right', width=7)
 
         # Botones
         self.btnOk = tk.Button(self.root, text='Ok', width=8, anchor='center')
@@ -165,8 +178,11 @@ class Config():
         # Comandos
         self.initCommands()
 
-        # Mainloop
-        self.root.mainloop()
+        # Carga configuraciones parqueo
+        self.loadParkingConfig()
+        self.enableParkingConfig()
+        self.loadRegisterConfig()
+        self.enableRegisterConfig()
 
 #############
 #  methods  #
@@ -179,20 +195,121 @@ class Config():
         self.btnOk.config(command=self.btnOkCommand)
         self.btnCancel.config(command=self.btnCancelCommand)
 
+    # F:
+    # I:
+    # O:
+    def enableParkingConfig(self):
+        isParkingEmpty = self.refParking.isEmpty()
+        isParkingEmpty = ('disabled', 'normal')[isParkingEmpty]
+
+        self.entLots.config(state=isParkingEmpty)
+        self.entHourly.config(state=isParkingEmpty)
+        self.entMin.config(state=isParkingEmpty)
+        self.entMail.config(state=isParkingEmpty)
+        self.entMinutes.config(state=isParkingEmpty)
+
+    # F:
+    # I:
+    # O:
+    def loadParkingConfig(self):
+        self.entLots.insert(0, self.refParking.getMaxLots())
+        self.entHourly.insert(0, self.refParking.getHourlyRate())
+        self.entMin.insert(0, self.refParking.getMinRate())
+        self.entMail.insert(0, self.refParking.getManagerMail())
+        self.entMinutes.insert(0, self.refParking.getMaxMinutes())
+
+    # F:
+    # I:
+    # O:
+    def saveParkingConfig(self):
+        self.refParking.setMaxLots( int(self.entLots.get()) )
+        self.refParking.setHourlyRate( float(self.entHourly.get()) )
+        self.refParking.setMinRate( float(self.entMin.get()) )
+        self.refParking.setManagerMail( self.entMail.get() )
+        self.refParking.setMaxMinutes( int(self.entMinutes.get()) )
+
+    # F:
+    # I:
+    # O:
+    def validateParkingConfig(self) -> bool:
+        return True
+
+    # F:
+    # I:
+    # O:
+    def enableRegisterConfig(self):
+        isRegisterEmpty = self.refRegister.isEmpty()
+        isRegisterEmpty = ('disabled', 'normal')[isRegisterEmpty]
+
+        self.entCoin1.config(state=isRegisterEmpty)
+        self.entCoin2.config(state=isRegisterEmpty)
+        self.entCoin3.config(state=isRegisterEmpty)
+
+        self.entBill1.config(state=isRegisterEmpty)
+        self.entBill2.config(state=isRegisterEmpty)
+        self.entBill3.config(state=isRegisterEmpty)
+        self.entBill4.config(state=isRegisterEmpty)
+        self.entBill5.config(state=isRegisterEmpty)
+
+    # F:
+    # I:
+    # O:
+    def loadRegisterConfig(self):
+        coinList = self.refRegister.getCoins()
+        billList = self.refRegister.getBills()
+        self.entCoin1.insert(0, coinList[0].getValue())
+        self.entCoin2.insert(0, coinList[1].getValue())
+        self.entCoin3.insert(0, coinList[2].getValue())
+
+        self.entBill1.insert(0, billList[0].getValue())
+        self.entBill2.insert(0, billList[1].getValue())
+        self.entBill3.insert(0, billList[2].getValue())
+        self.entBill4.insert(0, billList[3].getValue())
+        self.entBill5.insert(0, billList[4].getValue())
+
+    # F:
+    # I:
+    # O:
+    def saveRegisterConfig(self):
+        self.refRegister.initCoins(
+            [int(self.entCoin1.get()),
+             int(self.entCoin2.get()),
+             int(self.entCoin3.get())]
+        )
+        self.refRegister.initBills(
+            [int(self.entBill1.get()),
+             int(self.entBill2.get()),
+             int(self.entBill3.get()),
+             int(self.entBill4.get()),
+             int(self.entBill5.get())]
+        )
+
+    # F:
+    # I:
+    # O:
+    def validateRegisterConfig(self) -> bool:
+        return True
+
     # F: Funcionalidad de btnOk
     # I: Self - Instancia de Config
     # O: 
-    def btnOkCommand(self):
-        print('Ok')
+    def btnOkCommand(self): # TO DO Desarrollar metodos validacion
+        isParkingConfigValid = self.validateParkingConfig
+        isRegisterConfigValid = self.validateRegisterConfig
+        if isParkingConfigValid:
+            self.saveParkingConfig()
+        if isRegisterConfigValid:
+            self.saveRegisterConfig()
+        if isParkingConfigValid and isRegisterConfigValid:
+            self.root.destroy()
 
     # F: Funcionalidad de btnCancel
     # I: Self - Instancia de Config
     # O: 
     def btnCancelCommand(self):
-        print('Cancelar')
+        self.root.destroy()
 
 ################
 # main program #
 ################
 
-window = Config()

@@ -1,5 +1,5 @@
 ##################
-#Parking.py
+#ParkingLot.py
 #Date of creation: 31/5/22
 #Author: Mario Gomez Vega
 ##################
@@ -155,9 +155,14 @@ class ParkingLot():
     # O: Retorna el bool relevante
     def isFull(self) -> bool:
         size = len(self.lots)
-        if size >= self.max_lots:
-            return True
-        return False
+        return (size >= self.max_lots)
+
+    # F: Verifica si el parqueo se encuentra vacio
+    # I: Self - Instancia de ParkingLot
+    # O: Retorna el bool relevante
+    def isEmpty(self) -> bool:
+        size = len(self.lots)
+        return (size == 0)
 
     # F: Agrega una instancia de Vehicle al parqueo
     # I: Self - Instancia de ParkingLot, Vehicle - Instancia de Vehicle

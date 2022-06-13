@@ -1,5 +1,5 @@
 ##################
-#LoadRegister.py
+#LoadWindow.py
 #Date of creation: 7/6/22
 #Author: Mario Gomez Vega
 ##################
@@ -14,7 +14,7 @@ import tkinter as tk
 # classes #
 ###########
 
-class LoadRegister():
+class LoadWindow():
 
     # Ventana y widgets
     root = None         # Tkinter toplevel
@@ -125,5 +125,3 @@ class LoadRegister():
 # main program #
 ################
 
-
-window = LoadRegister()

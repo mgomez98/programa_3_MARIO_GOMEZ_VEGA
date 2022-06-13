@@ -6,7 +6,7 @@
 
 import json
 from CashRegister import CashRegister
-from Parking import ParkingLot
+from ParkingLot import ParkingLot
 
 # F: Guarda contenidos en un archivo
 # I: Recibe: Nombre del archivo a guardar, archivo a guardar
@@ -28,7 +28,6 @@ def loadCashRegister():
         objData = CashRegister.from_dict(objDictionary)
         return objData
     except FileNotFoundError:
-        binFile.close()
         return CashRegister()
 
 # F: Guarda contenidos en un archivo
@@ -51,5 +50,4 @@ def loadParkingLot():
         objData = ParkingLot.from_dict(objDictionary)
         return objData
     except FileNotFoundError:
-        binFile.close()
         return ParkingLot()

@@ -8,13 +8,27 @@
 # modules #
 ###########
 
+# TO DO Acerca de #mecago en william
+
 import tkinter as tk
+from jsonUtils import *
+
+from ConfigWindow import ConfigWindow
+from LoadWindow import LoadWindow
+#from BalanceWindow import BalanceWindow
+from EarningsWindow import EarningsWindow
+from EntryWindow import EntryWindow
+# Cajero TO DO
 
 ###########
 # classes #
 ###########
 
 class MainWindow():
+
+    # Logica Parqueo
+    parking = None   # Instancia ParkingLot
+    register = None  # Instancia CashRegister
 
     # Ventana y widgets
     root = None   # Tkinter root
@@ -30,19 +44,27 @@ class MainWindow():
     btnExit = None      # Boton salida vehiculo
     btnHelp = None      # Boton ayuda
 
+    # Toplevel
+    toplevel = None  # Toplevel activo
+
     def __init__(self):
+
+        # Carga de datos guardados
+        self.parking = loadParkingLot()
+        self.register = loadCashRegister()
         
         # Ventana principal
         self.root = tk.Tk()
         self.root.geometry('280x420')
         self.root.title('Parqueo')
-        self.root.config(bg='#a0a0a0')
+        self.root.config(bg='#c8c8c8')
+        self.root.protocol("WM_DELETE_WINDOW", self.closeWindow)
 
         # Frame botones
         self.frame = tk.Frame(self.root)
 
         # Widgets locales
-        lblTitle = tk.Label(self.root, text='Parqueo', font=('Times New Roman', 26))
+        lblTitle = tk.Label(self.root, text='Parqueo', font=('Times New Roman', 26), bg='#c8c8c8')
 
         # Botones
         self.btnConfig = tk.Button(self.frame, text='Configuracion',\
@@ -106,11 +128,19 @@ class MainWindow():
         self.btnExit.config(command=self.btnExitCommand)
         self.btnHelp.config(command=self.btnHelpCommand)
 
+    # F:
+    # I:
+    # O:
+    def closeWindow(self):
+        self.root.destroy()
+        writeParkingLot(self.parking)
+        writeCashRegister(self.register)
+
     # F: Funcionalidad de btnConfig
     # I: Self - Instancia de MainWindow
     # O: 
     def btnConfigCommand(self):
-        print('configuracion')
+        self.toplevel = ConfigWindow(self.root, self.parking, self.register)
 
     # F: Funcionalidad de btnLoad
     # I: Self - Instancia de MainWindow
