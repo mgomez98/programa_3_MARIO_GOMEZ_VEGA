@@ -63,39 +63,29 @@ class Vehicle():
     def getPlate(self) -> str:
         return self.plate
     
-    # F: Obtiene str de entryTime
+    # F: Obtiene entryTime
     # I: Self - Instancia de Vehicle
-    # O: Str de entryTime
+    # O: entryTime
     def getEntry(self) -> str:
-        return self.getTimeString( self.entryTime )
+        return self.entryTime
 
-    # F: Obtiene str de payTime
+    # F: Obtiene payTime
     # I: Self - Instancia de Vehicle
-    # O: Str de payTime
+    # O: payTime
     def getPayTime(self) -> str:
-        return self.getTimeString( self.payTime )
+        return self.payTime
 
-    # F: Obtiene str de exitTime
+    # F: Obtiene exitTime
     # I: Self - Instancia de Vehicle
-    # O: Str de exitTime
+    # O: exitTime
     def getExit(self) -> str:
-        return self.getTimeString( self.exitTime )
+        return self.exitTime
 
     # F: Asigna valor de billing
     # I: Self - Instancia de Vehicle, billing - float
     # O: N/a
     def setBilling(self, billing: float):
         self.billing = billing
-
-    # F: Obtiene str de tiempo
-    # I: Self - Instancia de Vehicle, time - float
-    # O: Str de tiempo
-    def getTimeString(self, time: float) -> str:
-        if time == None:
-            return ""
-        timeStr = time.gmtime(time)
-        timeStr = time.strftime("%H:%M - %d/%m/%Y", timeStr)
-        return timeStr
     
     # F: Obtiene int de lotID
     # I: Self - Instancia de Vehicle

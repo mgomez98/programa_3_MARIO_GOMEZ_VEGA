@@ -128,9 +128,9 @@ class MainWindow():
         self.btnExit.config(command=self.btnExitCommand)
         self.btnHelp.config(command=self.btnHelpCommand)
 
-    # F:
-    # I:
-    # O:
+    # F: Cierra ventana y guarda cambios
+    # I: Self - Instancia de MainWindow
+    # O: N/a
     def closeWindow(self):
         self.root.destroy()
         writeParkingLot(self.parking)

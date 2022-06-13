@@ -10,6 +10,14 @@
 
 from Denomination import Denomination
 
+#############
+# constants #
+#############
+
+INPUT = 0
+OUTPUT = 1
+TOTAL = 2
+
 ###########
 # classes #
 ###########
@@ -114,18 +122,18 @@ class CashRegister():
         for bill in self.bills:
             bill.emptyAmount()
 
-    # F:
-    # I:
-    # O:
+    # F: Realiza conteo de denominaciones
+    # I: Self, lista de denominaciones, type - constante consultada
+    # O: conteo - int
     def __countAmount(self, denominations: list, type: int) -> int:
         count = 0
         for denomination in denominations:
             count += self.__getAmount(denomination, type)
         return count
 
-    # F:
-    # I:
-    # O:
+    # F: Obtiene conteo de una denominacion
+    # I: Self, denominacion consultada, type - constante consultada
+    # O: conteo - int
     def __getAmount(self, denomination: Denomination, type: int) -> int:
         if type == 0: # cantidad de inputs
             return denomination.getAmountInputs()
@@ -134,18 +142,18 @@ class CashRegister():
         elif type == 2: # cantidad total
             return denomination.getTotalAmount()
 
-    # F:
-    # I:
-    # O:
+    # F: Realiza conteo de valor de denominaciones
+    # I: Self, lista de denominaciones, type - constante consultada
+    # O: sumatoria de valores - int
     def __countValue(self, denominations: list, type: int) -> int:
         value = 0
         for denomination in denominations:
             value += self.__getValue(denomination, type)
         return value
 
-    # F:
-    # I:
-    # O:
+    # F: Obtiene conteo de valor de una denominacion
+    # I: Self, denominacion consultada, type - constante consultada
+    # O: sumatoria de valor - int
     def __getValue(self, denomination: Denomination, type: int) -> int:
         if type == 0: # valor de inputs
             return denomination.getInputValue()
@@ -154,27 +162,27 @@ class CashRegister():
         elif type == 2: # valor total
             return denomination.getTotalValue()
 
-    # F:
-    # I:
-    # O:
+    # F: Obtiene conteo de monedas
+    # I: Self, constante consultada
+    # O: Retorna conteo de monedas
     def getCoinsAmount(self, type: int) -> int:
         return self.__countAmount(self.coins, type)
 
-    # F:
-    # I:
-    # O:
+    # F: Obtiene conteo de billetes
+    # I: Self, constante consultada
+    # O: Retorna conteo de billetes
     def getBillsAmount(self, type: int) -> int:
         return self.__countAmount(self.bills, type)
 
-    # F:
-    # I:
-    # O:
+    # F: Obtiene valor de monedas
+    # I: Self, constante consultada
+    # O: Retorna valor de monedas
     def getTotalCoinValue(self, type: int) -> int:
         return self.__countValue(self.coins, type)
 
-    # F:
-    # I:
-    # O:
+    # F: Obtiene valor de billetes
+    # I: Self, constante consultada
+    # O: Retorna valor de billetes
     def getTotalBillValue(self, type: int) -> int:
         return self.__countValue(self.bills, type)
 

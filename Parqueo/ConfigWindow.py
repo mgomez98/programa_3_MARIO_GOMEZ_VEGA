@@ -195,9 +195,9 @@ class ConfigWindow():
         self.btnOk.config(command=self.btnOkCommand)
         self.btnCancel.config(command=self.btnCancelCommand)
 
-    # F:
-    # I:
-    # O:
+    # F: Habilita entries de configuracion (parqueo)
+    # I: Self - Instancia de Config
+    # O: N/a
     def enableParkingConfig(self):
         isParkingEmpty = self.refParking.isEmpty()
         isParkingEmpty = ('disabled', 'normal')[isParkingEmpty]
@@ -208,9 +208,9 @@ class ConfigWindow():
         self.entMail.config(state=isParkingEmpty)
         self.entMinutes.config(state=isParkingEmpty)
 
-    # F:
-    # I:
-    # O:
+    # F: Carga configuracion de parqueo
+    # I: Self - Instancia de Config
+    # O: N/a
     def loadParkingConfig(self):
         self.entLots.insert(0, self.refParking.getMaxLots())
         self.entHourly.insert(0, self.refParking.getHourlyRate())
@@ -218,9 +218,9 @@ class ConfigWindow():
         self.entMail.insert(0, self.refParking.getManagerMail())
         self.entMinutes.insert(0, self.refParking.getMaxMinutes())
 
-    # F:
-    # I:
-    # O:
+    # F: Guarda configuracion de parqueo
+    # I: Self - Instancia de Config
+    # O: N/a
     def saveParkingConfig(self):
         self.refParking.setMaxLots( int(self.entLots.get()) )
         self.refParking.setHourlyRate( float(self.entHourly.get()) )
@@ -231,12 +231,12 @@ class ConfigWindow():
     # F:
     # I:
     # O:
-    def validateParkingConfig(self) -> bool:
+    def validateParkingConfig(self) -> bool: # TO DO
         return True
 
-    # F:
-    # I:
-    # O:
+    # F: Habilita entries de configuracion (cajero)
+    # I: Self - Instancia de Config
+    # O: N/a
     def enableRegisterConfig(self):
         isRegisterEmpty = self.refRegister.isEmpty()
         isRegisterEmpty = ('disabled', 'normal')[isRegisterEmpty]
@@ -251,9 +251,9 @@ class ConfigWindow():
         self.entBill4.config(state=isRegisterEmpty)
         self.entBill5.config(state=isRegisterEmpty)
 
-    # F:
-    # I:
-    # O:
+    # F: Carga configuracion de cajero
+    # I: Self - Instancia de Config
+    # O: N/a
     def loadRegisterConfig(self):
         coinList = self.refRegister.getCoins()
         billList = self.refRegister.getBills()
@@ -267,9 +267,9 @@ class ConfigWindow():
         self.entBill4.insert(0, billList[3].getValue())
         self.entBill5.insert(0, billList[4].getValue())
 
-    # F:
-    # I:
-    # O:
+    # F: Guarda configuracion de cajero
+    # I: Self - Instancia de Config
+    # O: N/a
     def saveRegisterConfig(self):
         self.refRegister.initCoins(
             [int(self.entCoin1.get()),
@@ -287,12 +287,12 @@ class ConfigWindow():
     # F:
     # I:
     # O:
-    def validateRegisterConfig(self) -> bool:
+    def validateRegisterConfig(self) -> bool: # TO DO
         return True
 
     # F: Funcionalidad de btnOk
     # I: Self - Instancia de Config
-    # O: 
+    # O: N/a
     def btnOkCommand(self): # TO DO Desarrollar metodos validacion
         isParkingConfigValid = self.validateParkingConfig
         isRegisterConfigValid = self.validateRegisterConfig
@@ -305,7 +305,7 @@ class ConfigWindow():
 
     # F: Funcionalidad de btnCancel
     # I: Self - Instancia de Config
-    # O: 
+    # O: N/a
     def btnCancelCommand(self):
         self.root.destroy()
 
