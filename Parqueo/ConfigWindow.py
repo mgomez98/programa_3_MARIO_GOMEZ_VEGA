@@ -9,8 +9,9 @@
 ###########
 
 import tkinter as tk
-from CashRegister import CashRegister
+from msgUtils import *
 
+from CashRegister import CashRegister
 from ParkingLot import ParkingLot
 
 ###########
@@ -77,35 +78,36 @@ class ConfigWindow():
         self.root = tk.Toplevel(parent)
         self.root.geometry('600x550')
         self.root.title('Configuracion')
+        self.root.config(bg='#c9c9c9')
         self.root.focus_set()
 
         # Frame texto
-        self.frmText = tk.Frame(self.root, height=600)
+        self.frmText = tk.Frame(self.root, height=600, bg='#c9c9c9')
 
         # Frame entries
-        self.frmEntry = tk.Frame(self.root, height=600)
+        self.frmEntry = tk.Frame(self.root, height=600, bg='#c9c9c9')
 
         # Widgets locales
-        lblTitle = tk.Label(self.root, text='Parqueo - Configuracion', font=('Times New Roman', 16))
+        lblTitle = tk.Label(self.root, text='Parqueo - Configuracion', font=('Times New Roman', 16), bg='#c9c9c9')
 
         # Labels
-        self.lblLots = tk.Label(self.frmText, text='Cantidad de espacios en el parqueo (entero >= 1)', anchor='w')
-        self.lblHourly = tk.Label(self.frmText, text='Precio por hora (flotante con máximo 2 decimales >=0)', anchor='w')
-        self.lblMin = tk.Label(self.frmText, text='Pago mínimo (flotante con máximo 2 decimales >=0)', anchor='w')
-        self.lblMail = tk.Label(self.frmText, text='Correo electrónico del supervisor', anchor='w')
-        self.lblMinutes = tk.Label(self.frmText, text='Minutos máximos para salir después del pago (entero >=0)', anchor='w')
+        self.lblLots = tk.Label(self.frmText, text='Cantidad de espacios en el parqueo (entero >= 1)', anchor='w', bg='#c9c9c9')
+        self.lblHourly = tk.Label(self.frmText, text='Precio por hora (flotante con máximo 2 decimales >=0)', anchor='w', bg='#c9c9c9')
+        self.lblMin = tk.Label(self.frmText, text='Pago mínimo (flotante con máximo 2 decimales >=0)', anchor='w', bg='#c9c9c9')
+        self.lblMail = tk.Label(self.frmText, text='Correo electrónico del supervisor', anchor='w', bg='#c9c9c9')
+        self.lblMinutes = tk.Label(self.frmText, text='Minutos máximos para salir después del pago (entero >=0)', anchor='w', bg='#c9c9c9')
 
-        self.lblCoinType = tk.Label(self.frmText, text='Tipos de moneda (máximo 3 tipos, enteros >= 0):', anchor='w')
-        self.lblCoin1 = tk.Label(self.frmText, text='Moneda 1, la de menor denominación (ejemplo 50)', anchor='w')
-        self.lblCoin2 = tk.Label(self.frmText, text='Moneda 2, denominación siguiente a la anterior (ejemplo 100)', anchor='w')
-        self.lblCoin3 = tk.Label(self.frmText, text='Moneda 3, denominación siguiente a la anterior (ejemplo 500)', anchor='w')
+        self.lblCoinType = tk.Label(self.frmText, text='Tipos de moneda (máximo 3 tipos, enteros >= 0):', anchor='w', bg='#c9c9c9')
+        self.lblCoin1 = tk.Label(self.frmText, text='Moneda 1, la de menor denominación (ejemplo 50)', anchor='w', bg='#c9c9c9')
+        self.lblCoin2 = tk.Label(self.frmText, text='Moneda 2, denominación siguiente a la anterior (ejemplo 100)', anchor='w', bg='#c9c9c9')
+        self.lblCoin3 = tk.Label(self.frmText, text='Moneda 3, denominación siguiente a la anterior (ejemplo 500)', anchor='w', bg='#c9c9c9')
 
-        self.lblBillType = tk.Label(self.frmText, text='Tipos de billetes (máximo 5 tipos, enteros >= 0):', anchor='w')
-        self.lblBill1 = tk.Label(self.frmText, text='Billete 1, el de menor denominación (ejemplo 1000)', anchor='w')
-        self.lblBill2 = tk.Label(self.frmText, text='Billete 2, denominación siguiente a la anterior (ejemplo 2000)', anchor='w')
-        self.lblBill3 = tk.Label(self.frmText, text='Billete 3, denominación siguiente a la anterior (ejemplo 5000)', anchor='w')
-        self.lblBill4 = tk.Label(self.frmText, text='Billete 4, denominación siguiente a la anterior (ejemplo 10000)', anchor='w')
-        self.lblBill5 = tk.Label(self.frmText, text='Billete 5, denominación siguiente a la anterior (ejemplo 20000)', anchor='w')
+        self.lblBillType = tk.Label(self.frmText, text='Tipos de billetes (máximo 5 tipos, enteros >= 0):', anchor='w', bg='#c9c9c9')
+        self.lblBill1 = tk.Label(self.frmText, text='Billete 1, el de menor denominación (ejemplo 1000)', anchor='w', bg='#c9c9c9')
+        self.lblBill2 = tk.Label(self.frmText, text='Billete 2, denominación siguiente a la anterior (ejemplo 2000)', anchor='w', bg='#c9c9c9')
+        self.lblBill3 = tk.Label(self.frmText, text='Billete 3, denominación siguiente a la anterior (ejemplo 5000)', anchor='w', bg='#c9c9c9')
+        self.lblBill4 = tk.Label(self.frmText, text='Billete 4, denominación siguiente a la anterior (ejemplo 10000)', anchor='w', bg='#c9c9c9')
+        self.lblBill5 = tk.Label(self.frmText, text='Billete 5, denominación siguiente a la anterior (ejemplo 20000)', anchor='w', bg='#c9c9c9')
 
         # Entries parqueo
         self.entLots = tk.Entry(self.frmEntry, justify='right', width=7)
@@ -301,6 +303,7 @@ class ConfigWindow():
         if isRegisterConfigValid:
             self.saveRegisterConfig()
         if isParkingConfigValid and isRegisterConfigValid:
+            infoBox(self.root, 'Configuracion', 'Se han guardado los cambios')
             self.root.destroy()
 
     # F: Funcionalidad de btnCancel

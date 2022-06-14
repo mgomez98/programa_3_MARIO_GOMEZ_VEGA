@@ -33,6 +33,7 @@ class EarningsWindow():
         self.root = tk.Tk()
         self.root.geometry('400x250')
         self.root.title('Ingresos de Dinero')
+        self.root.config(bg='#c9c9c9')
 
         # Widgets locales
         lblTitle = tk.Label(self.root, text='Parqueo - Ingresos de Dinero', font=('Times New Roman', 16))

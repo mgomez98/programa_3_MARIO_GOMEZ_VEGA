@@ -47,6 +47,7 @@ class LoadWindow():
         self.root = tk.Tk()
         self.root.geometry('800x600')
         self.root.title('Cargar Cajero')
+        self.root.config(bg='#c9c9c9')
 
         # Frame principal
         self.frame = tk.Frame(self.root)

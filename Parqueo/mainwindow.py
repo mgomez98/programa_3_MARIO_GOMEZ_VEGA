@@ -19,6 +19,7 @@ from LoadWindow import LoadWindow
 from EarningsWindow import EarningsWindow
 from EntryWindow import EntryWindow
 # Cajero TO DO
+from ExitWindow import ExitWindow
 
 ###########
 # classes #
@@ -57,7 +58,7 @@ class MainWindow():
         self.root = tk.Tk()
         self.root.geometry('280x420')
         self.root.title('Parqueo')
-        self.root.config(bg='#c8c8c8')
+        self.root.config(bg='#c9c9c9')
         self.root.protocol("WM_DELETE_WINDOW", self.closeWindow)
 
         # Frame botones
@@ -164,7 +165,7 @@ class MainWindow():
     # I: Self - Instancia de MainWindow
     # O:
     def btnEntryCommand(self):
-        print('entrada de vehiculo')
+        self.toplevel = EntryWindow(self.root, self.parking)
 
     # F: Funcionalidad de btnRegister
     # I: Self - Instancia de MainWindow
@@ -176,7 +177,7 @@ class MainWindow():
     # I: Self - Instancia de MainWindow
     # O:
     def btnExitCommand(self):
-        print('salida de vehiculo')
+        self.toplevel = ExitWindow(self.root, self.parking)
 
     # F: Funcionalidad de btnHelp
     # I: Self - Instancia de MainWindow

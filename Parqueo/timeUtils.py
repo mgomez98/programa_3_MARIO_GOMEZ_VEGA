@@ -20,6 +20,13 @@ def getTimeString(timeFloat: float) -> str:
     timeStruct = time.localtime(timeFloat)
     return time.strftime("%H:%M - %d/%m/%Y", timeStruct)
 
+# F: Obtiene str de tiempo sobre el limite
+# I: timeFloat - segundos en formato float
+# O: Str de tiempo
+def getTimeTaken(timeFloat: float) -> str:
+    timeStruct = time.localtime(timeFloat)
+    return time.strftime("%M minutos", timeStruct)
+
 # F: Valida conversion de fecha str a float de segundos
 # I: str de fecha
 # O: float de segundos, None si la fecha es invalida

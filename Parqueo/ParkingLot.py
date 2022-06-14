@@ -60,9 +60,15 @@ class ParkingLot():
 
     # Metodo list, dict <dictionary> -> list, dict <vehicle>
     def dict_to_list(self):
+        intKeys = []
         for key in self.lots.keys():
-            dictVehicle = self.lots[key]
+            intKeys.append(int(key))
+
+        for key in intKeys:
+            dictVehicle = self.lots[str(key)]
             self.lots[key] = Vehicle.from_dict(dictVehicle)
+            del self.lots[str(key)]
+
         for i, vehicle in enumerate(self.log):
             self.log[i] = Vehicle.from_dict(vehicle)
 
@@ -199,6 +205,12 @@ class ParkingLot():
             if plate == vehicle.getPlate():
                 return vehicle
         return None
+
+    # F: Verifica si queda tiempo para retirar vehiculo
+    # I: Self, vehicle - instancia de Vehicle
+    # O: Bool
+    def isTimeUp(self, vehicle: Vehicle) -> bool:
+        return vehicle.getTimeDelta() >= (self.max_minutes * 60)
 
     # F:
     # I:    vehicleList (Vehiculos que no han pagado)

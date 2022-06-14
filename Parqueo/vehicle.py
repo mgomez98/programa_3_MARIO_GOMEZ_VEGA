@@ -66,20 +66,38 @@ class Vehicle():
     # F: Obtiene entryTime
     # I: Self - Instancia de Vehicle
     # O: entryTime
-    def getEntry(self) -> str:
+    def getEntryTime(self) -> float:
         return self.entryTime
+
+    # F: Asigna entryTime
+    # I: Self, entryTime - float
+    # O: N/a
+    def setEntryTime(self, entryTime: float):
+        self.entryTime = entryTime
 
     # F: Obtiene payTime
     # I: Self - Instancia de Vehicle
     # O: payTime
-    def getPayTime(self) -> str:
+    def getPayTime(self) -> float:
         return self.payTime
+
+    # F: Asigna payTime
+    # I: Self, payTime - float
+    # O: N/a
+    def setPayTime(self, payTime: float):
+        self.payTime = payTime
 
     # F: Obtiene exitTime
     # I: Self - Instancia de Vehicle
     # O: exitTime
-    def getExit(self) -> str:
+    def getExitTime(self) -> float:
         return self.exitTime
+
+    # F: Asigna exitTime
+    # I: Self, exitTime - float
+    # O: N/a
+    def setExitTime(self, exitTime: float):
+        self.exitTime = exitTime
 
     # F: Asigna valor de billing
     # I: Self - Instancia de Vehicle, billing - float
@@ -93,8 +111,17 @@ class Vehicle():
     def getLotID(self) -> int:
         return self.lotID
 
-    # Crear metodos para identificar...
-    #   paytime == None: Vehiculo no ha pagado
+    # F: Verifica si el vehiculo ha pagado
+    # I: Self
+    # O: Bool
+    def hasPaid(self) -> bool:
+        return self.payTime != None
+
+    # F: Obtiene tiempo entre pago y salida
+    # I: Self
+    # O: Tiempo transcurrido en segundos (float)
+    def getTimeDelta(self) -> float:
+        return self.getExitTime() - self.getPayTime()
 
 ################
 # main program #
