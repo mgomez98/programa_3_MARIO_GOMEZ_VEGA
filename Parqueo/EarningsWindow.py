@@ -36,27 +36,27 @@ class EarningsWindow():
         self.root.config(bg='#c9c9c9')
 
         # Widgets locales
-        lblTitle = tk.Label(self.root, text='Parqueo - Ingresos de Dinero', font=('Times New Roman', 16))
+        lblTitle = tk.Label(self.root, text='Parqueo - Ingresos de Dinero', font=('Times New Roman', 16), bg='#c9c9c9')
         
-        frmDate = tk.Frame(self.root)
-        lblFromDate = tk.Label(frmDate, text='Del dia')
-        lblUntilDate = tk.Label(frmDate, text='Al dia')
+        frmDate = tk.Frame(self.root, bg='#c9c9c9')
+        lblFromDate = tk.Label(frmDate, text='Del dia', bg='#c9c9c9')
+        lblUntilDate = tk.Label(frmDate, text='Al dia', bg='#c9c9c9')
         
-        frmEarnings = tk.Frame(self.root)
-        lblCash = tk.Label(frmEarnings, text='Total de ingresos en efectivo')
-        lblCard = tk.Label(frmEarnings, text='Total de ingresos por tarjeta de credito')
-        lblTotal = tk.Label(frmEarnings, text='Total de ingresos')
-        lblEstimate = tk.Label(frmEarnings, text='Estimado de ingresos por recibir')
+        frmEarnings = tk.Frame(self.root, bg='#c9c9c9')
+        lblCash = tk.Label(frmEarnings, text='Total de ingresos en efectivo', bg='#c9c9c9')
+        lblCard = tk.Label(frmEarnings, text='Total de ingresos por tarjeta de credito', bg='#c9c9c9')
+        lblTotal = tk.Label(frmEarnings, text='Total de ingresos', bg='#c9c9c9')
+        lblEstimate = tk.Label(frmEarnings, text='Estimado de ingresos por recibir', bg='#c9c9c9')
 
         # Entries
         self.fromDate = tk.Entry(frmDate)
         self.untilDate = tk.Entry(frmDate)
 
         # Labels
-        self.cashEarnings = tk.Label(frmEarnings, text='xxx.xxx.xxx')
-        self.cardEarnings = tk.Label(frmEarnings, text='xxx.xxx.xxx')
-        self.totalEarnings = tk.Label(frmEarnings, text='xxx.xxx.xxx')
-        self.estimateEarnings = tk.Label(frmEarnings, text='xxx.xxx.xxx')
+        self.cashEarnings = tk.Label(frmEarnings, text='xxx.xxx.xxx', bg='#c9c9c9')
+        self.cardEarnings = tk.Label(frmEarnings, text='xxx.xxx.xxx', bg='#c9c9c9')
+        self.totalEarnings = tk.Label(frmEarnings, text='xxx.xxx.xxx', bg='#c9c9c9')
+        self.estimateEarnings = tk.Label(frmEarnings, text='xxx.xxx.xxx', bg='#c9c9c9')
 
         # Boton
         self.btnOk = tk.Button(self.root, text='Ok', width=8, anchor='center')

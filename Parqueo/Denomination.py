@@ -10,6 +10,14 @@
 
 
 
+#############
+# constants #
+#############
+
+INPUT = 0
+OUTPUT = 1
+TOTAL = 2
+
 ###########
 # classes #
 ###########
@@ -116,6 +124,28 @@ class Denomination():
     # O: Retorna int
     def calculateTotalValue(self, amount: int) -> int:
         return (amount * self.value)
+
+    # F: Obtiene conteo de una denominacion
+    # I: Self, denominacion consultada, type - constante consultada
+    # O: conteo - int
+    def getAmount(self, type: int) -> int:
+        if type == INPUT: # cantidad de inputs
+            return self.getAmountInputs()
+        elif type == OUTPUT: # cantidad de outputs
+            return self.getAmountOutputs()
+        elif type == TOTAL: # cantidad total
+            return self.getTotalAmount()
+
+    # F: Obtiene conteo de valor de una denominacion
+    # I: Self, denominacion consultada, type - constante consultada
+    # O: sumatoria de valor - int
+    def getValueByType(self, type: int) -> int:
+        if type == INPUT: # valor de inputs
+            return self.getInputValue()
+        elif type == OUTPUT: # valor de outputs
+            return self.getOutputValue()
+        elif type == TOTAL: # valor total
+            return self.getTotalValue()
 
 ################
 # main program #

@@ -8,15 +8,7 @@
 # modules #
 ###########
 
-from Denomination import Denomination
-
-#############
-# constants #
-#############
-
-INPUT = 0
-OUTPUT = 1
-TOTAL = 2
+from Denomination import Denomination, INPUT, OUTPUT, TOTAL
 
 ###########
 # classes #
@@ -128,19 +120,8 @@ class CashRegister():
     def __countAmount(self, denominations: list, type: int) -> int:
         count = 0
         for denomination in denominations:
-            count += self.__getAmount(denomination, type)
+            count += denomination.getAmount(type)
         return count
-
-    # F: Obtiene conteo de una denominacion
-    # I: Self, denominacion consultada, type - constante consultada
-    # O: conteo - int
-    def __getAmount(self, denomination: Denomination, type: int) -> int:
-        if type == 0: # cantidad de inputs
-            return denomination.getAmountInputs()
-        elif type == 1: # cantidad de outputs
-            return denomination.getAmountOutputs()
-        elif type == 2: # cantidad total
-            return denomination.getTotalAmount()
 
     # F: Realiza conteo de valor de denominaciones
     # I: Self, lista de denominaciones, type - constante consultada
@@ -148,19 +129,8 @@ class CashRegister():
     def __countValue(self, denominations: list, type: int) -> int:
         value = 0
         for denomination in denominations:
-            value += self.__getValue(denomination, type)
+            value += denomination.getValueByType(type)
         return value
-
-    # F: Obtiene conteo de valor de una denominacion
-    # I: Self, denominacion consultada, type - constante consultada
-    # O: sumatoria de valor - int
-    def __getValue(self, denomination: Denomination, type: int) -> int:
-        if type == 0: # valor de inputs
-            return denomination.getInputValue()
-        elif type == 1: # valor de outputs
-            return denomination.getOutputValue()
-        elif type == 2: # valor total
-            return denomination.getTotalValue()
 
     # F: Obtiene conteo de monedas
     # I: Self, constante consultada

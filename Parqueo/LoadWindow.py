@@ -10,89 +10,48 @@
 
 import tkinter as tk
 
+from FrameLoad import FrameLoad
+from CashRegister import CashRegister
+from Denomination import Denomination
+
 ###########
 # classes #
 ###########
 
 class LoadWindow():
+    
+    # Logica cajero
+    refRegister = None  # Referencia CashRegister
 
     # Ventana y widgets
     root = None         # Tkinter toplevel
-    frame = None        # Frame principal
-
-    frmDen = None       # Frame denominacion
-    frmBalPrev = None   # Frame saldo anterior
-    frmLoad = None      # Frame carga
-    frmBal = None       # Frame saldo
-
-    # Listas de widgets
-    lstDen = None       # Lista denominacion (Labels)
-
-    lstBalPrev1 = None  # Lista saldo anterior cantidad (Labels)
-    lstBalPrev2 = None  # Lista saldo anterior total (Labels)
-
-    lstLoad1 = None     # Lista carga cantidad (Entries)
-    lstLoad2 = None     # Lista carga total (Labels)
-
-    lstBal1 = None      # Lista saldo cantidad (Labels)
-    lstBal2 = None      # Lista saldo total (Labels)
+    coinFrames = None   # Lista de FrameLoad (monedas)
+    billFrames = None    # Lista de FrameLoad (billetes)
 
     # Botones
     btnOk = None        # Boton Ok
     btnCancel = None    # Boton Cancelar
     btnEmpty = None     # Boton Vaciar Cajero
 
-    def __init__(self):
+    def __init__(self, parent, register: CashRegister):
+
+        # Recibe logica de ventana principal
+        self.refRegister = register
+
         # Ventana cargar cajero
-        self.root = tk.Tk()
-        self.root.geometry('800x600')
+        self.root = tk.Toplevel(parent)
+        self.root.geometry('610x350')
         self.root.title('Cargar Cajero')
         self.root.config(bg='#c9c9c9')
 
-        # Frame principal
-        self.frame = tk.Frame(self.root)
-
-        # Frames por categoria
-        self.frmDen = tk.Frame(self.frame)
-        self.frmBalPrev = tk.Frame(self.frame)
-        self.frmLoad = tk.Frame(self.frame)
-        self.frmBal = tk.Frame(self.frame)
-
         # Widgets locales
-        lblTitle = tk.Label(self.root, text='Parqueo - Cargar Cajero', font=('Times New Roman', 16))
-        lblBalPrev = tk.Label(self.root, text='Saldo antes de la carga')
-        lblLoad = tk.Label(self.root, text='Carga')
-        lblBal = tk.Label(self.root, text='Saldo')
+        lblTitle = tk.Label(self.root, text='Parqueo - Cargar Cajero', font=('Times New Roman', 16), bg='#c9c9c9')
 
-        # Listas de widgets
-        # lstDen
-        self.lstDen = []
-        for a in range(15):
-            self.lstDen.append(tk.Label(self.frmDen, text=a, anchor='w'))
-        
-        # lstBalPrev
-        self.lstBalPrev1 = []
-        for b in range(13):
-            self.lstBalPrev1.append(tk.Label(self.frmBalPrev, text=b))
-        self.lstBalPrev2 = []
-        for c in range(13):
-            self.lstBalPrev2.append(tk.Label(self.frmBalPrev, text=c))
-
-        # lstLoad
-        self.lstLoad1 = []
-        for d in range(13):
-            self.lstLoad1.append(tk.Entry(self.frmLoad))
-        self.lstLoad2 = []
-        for e in range(13):
-            self.lstLoad2.append(tk.Label(self.frmLoad, text=e))
-
-        # lstBal
-        self.lstBal1 = []
-        for f in range(13):
-            self.lstBal1.append(tk.Label(self.frmBal, text=f))
-        self.lstBal2 = []
-        for g in range(15):
-            self.lstBal2.append(tk.Label(self.frmBal, text=g))
+        # Widgets
+        frmCoin = tk.Frame(self.root, bg='#c9c9c9')
+        self.initCoinFrames(frmCoin)
+        frmBill = tk.Frame(self.root, bg='#c9c9c9')
+        self.initBillFrames(frmBill)
 
         # Botones
         self.btnOk = tk.Button(self.root, text='Ok')
@@ -100,29 +59,83 @@ class LoadWindow():
         self.btnEmpty = tk.Button(self.root, text='Vaciar cajero')
 
         # Posicionamiento
-        lblTitle.grid(row=0, column=0)
-
-        lblBalPrev.grid(row=1, column=1)
-        lblLoad.grid(row=1, column=2)
-        lblBal.grid(row=1, column=3)
-
-        self.frmDen.grid(row=2, column=0)
-        self.frmBalPrev.grid(row=2, column=1)
-        self.frmLoad.grid(row=2, column=2)
-        self.frmBal.grid(row=2, column=3)
-
-        
-
-        # Mainloop
-        self.root.mainloop()
+        lblTitle.place(anchor='nw', relx=0.03, rely=0.025)
+        self.initHeaderFrame()
+        frmCoin.place(anchor='n', relx=0.5, rely=0.28)
+        frmBill.place(anchor='n', relx=0.5, rely=0.6)
 
 #############
 #  methods  #
 #############
 
+    # F: Inicializa encabezado
+    # I: Self
+    # O: N/a
+    def initHeaderFrame(self):
+        frmHeader = tk.Frame(self.root, bg='#c9c9c9')
 
+        lblPrev = tk.Label(frmHeader, text='Saldo antes de la carga', bg='#c9c9c9')
+        lblLoad = tk.Label(frmHeader, text='Carga', bg='#c9c9c9')
+        lblTotal = tk.Label(frmHeader, text='Saldo', bg='#c9c9c9')
+
+        lblDen = tk.Label(frmHeader, text='Denominacion', bg='#c9c9c9')
+        
+        lblCountPrev = tk.Label(frmHeader, text='Cantidad', bg='#c9c9c9')
+        lblValuePrev = tk.Label(frmHeader, text='Total', bg='#c9c9c9')
+        
+        lblCountLoad = tk.Label(frmHeader, text='Cantidad', bg='#c9c9c9')
+        lblValueLoad = tk.Label(frmHeader, text='Total', bg='#c9c9c9')
+
+        lblCountTotal = tk.Label(frmHeader, text='Cantidad', bg='#c9c9c9')
+        lblValueTotal = tk.Label(frmHeader, text='Total', bg='#c9c9c9')
+
+        # Posicionamiento
+        frmHeader.place(anchor='nw', relx=0.03, rely=0.15)
+
+        lblPrev.grid(row=0, column=0, columnspan=3, sticky='e', padx=(32,52))
+        lblLoad.grid(row=0, column=3, columnspan=2, padx=(0,46))
+        lblTotal.grid(row=0, column=5, columnspan=2)
+
+        lblDen.grid(row=1, column=0, padx=(4, 40))
+
+        lblCountPrev.grid(row=1, column=1, padx=(0, 22))
+        lblValuePrev.grid(row=1, column=2, padx=(0, 66))
+
+        lblCountLoad.grid(row=1, column=3, padx=(0, 25))
+        lblValueLoad.grid(row=1, column=4, padx=(0, 49))
+
+        lblCountTotal.grid(row=1, column=5, padx=(0, 15))
+        lblValueTotal.grid(row=1, column=6)
+
+    # F: Inicializa apartado de monedas
+    # I: Self, parent
+    # O: N/a
+    def initCoinFrames(self, frame: tk.Frame):
+        self.coinFrames = []
+        for coin in self.refRegister.getCoins():
+            if coin.getValue() > 0:
+                frmLoad = FrameLoad(frame, coin, 'Moneda')
+                self.coinFrames.append(frmLoad)
+                frmLoad.grid()
+        # TO DO Agregar frame total
+
+    # F: Inicializa apartado de billetes
+    # I: Self, parent
+    # O: N/a
+    def initBillFrames(self, frame: tk.Frame):
+        self.billFrames = []
+        for bill in self.refRegister.getBills():
+            if bill.getValue() > 0:
+                frmLoad = FrameLoad(frame, bill, 'Billete')
+                self.billFrames.append(frmLoad)
+                frmLoad.grid()
+        # TO DO Agregar frame total
 
 ################
 # main program #
 ################
 
+# TO DO Crear frame total
+# TO DO Agregar botones
+# TO DO Agregar validacion colectiva
+# TO DO Agregar commit colectivo

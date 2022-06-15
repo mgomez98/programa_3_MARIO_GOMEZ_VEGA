@@ -147,7 +147,7 @@ class MainWindow():
     # I: Self - Instancia de MainWindow
     # O:
     def btnLoadCommand(self):
-        print('cargar cajero')
+        self.toplevel = LoadWindow(self.root, self.register)
 
     # F: Funcionalidad de btnBalance
     # I: Self - Instancia de MainWindow
