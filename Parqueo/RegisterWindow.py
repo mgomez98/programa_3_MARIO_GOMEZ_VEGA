@@ -1,6 +1,6 @@
 ##################
-#LoadWindow.py
-#Date of creation: 7/6/22
+#RegisterWindow.py
+#Date of creation: 15/6/22 
 #Author: Mario Gomez Vega
 ##################
 
@@ -10,17 +10,15 @@
 
 import tkinter as tk
 
-from FrameLoad import FrameLoad
 from CashRegister import CashRegister
-from Denomination import Denomination
-from FrameTotalLoad import FrameTotalLoad
-from msgUtils import *
+from FrameView import FrameView
+from FrameTotalView import FrameTotalView, COIN, BILL
 
 ###########
 # classes #
 ###########
 
-class LoadWindow():
+class RegisterWindow():
     
     # Logica cajero
     refRegister = None  # Referencia CashRegister
@@ -32,8 +30,6 @@ class LoadWindow():
 
     # Botones
     btnOk = None        # Boton Ok
-    btnCancel = None    # Boton Cancelar
-    btnEmpty = None     # Boton Vaciar Cajero
 
     def __init__(self, parent, register: CashRegister):
 
@@ -47,7 +43,7 @@ class LoadWindow():
         self.root.config(bg='#c9c9c9')
 
         # Widgets locales
-        lblTitle = tk.Label(self.root, text='Parqueo - Cargar Cajero', font=('Times New Roman', 16), bg='#c9c9c9')
+        lblTitle = tk.Label(self.root, text='Parqueo - Saldo del Cajero', font=('Times New Roman', 16), bg='#c9c9c9')
 
         # Widgets
         frmCoin = tk.Frame(self.root, bg='#c9c9c9')
@@ -57,8 +53,6 @@ class LoadWindow():
 
         # Botones
         self.btnOk = tk.Button(self.root, text='Ok', width=8)
-        self.btnCancel = tk.Button(self.root, text='Cancelar', width=8)
-        self.btnEmpty = tk.Button(self.root, text='Vaciar cajero', width=10)
 
         # Posicionamiento
         lblTitle.place(anchor='nw', relx=0.03, rely=0.025)
@@ -66,13 +60,10 @@ class LoadWindow():
         frmCoin.place(anchor='n', relx=0.5, rely=0.23)
         frmBill.place(anchor='n', relx=0.5, rely=0.49)
 
-        self.btnOk.place(anchor='s', relx=0.35, rely=0.925)
-        self.btnCancel.place(anchor='s', relx=0.48, rely=0.925)
-        self.btnEmpty.place(anchor='s', relx=0.62, rely=0.925)
+        self.btnOk.place(anchor='s', relx=0.2, rely=0.925)
 
         # Comandos
         self.initCommands()
-        self.enableEmpty()
 
 #############
 #  methods  #
@@ -84,8 +75,8 @@ class LoadWindow():
     def initHeaderFrame(self):
         frmHeader = tk.Frame(self.root, bg='#c9c9c9')
 
-        lblPrev = tk.Label(frmHeader, text='Saldo antes de la carga', bg='#c9c9c9')
-        lblLoad = tk.Label(frmHeader, text='Carga', bg='#c9c9c9')
+        lblPrev = tk.Label(frmHeader, text='Entradas', bg='#c9c9c9')
+        lblLoad = tk.Label(frmHeader, text='Salidas', bg='#c9c9c9')
         lblTotal = tk.Label(frmHeader, text='Saldo', bg='#c9c9c9')
 
         lblDen = tk.Label(frmHeader, text='Denominacion', bg='#c9c9c9')
@@ -102,7 +93,7 @@ class LoadWindow():
         # Posicionamiento
         frmHeader.place(anchor='nw', relx=0.03, rely=0.10)
 
-        lblPrev.grid(row=0, column=0, columnspan=3, sticky='e', padx=(32,52))
+        lblPrev.grid(row=0, column=0, columnspan=3, sticky='e', padx=(0,97))
         lblLoad.grid(row=0, column=3, columnspan=2, padx=(0,46))
         lblTotal.grid(row=0, column=5, columnspan=2)
 
@@ -124,10 +115,10 @@ class LoadWindow():
         self.coinFrames = []
         for coin in self.refRegister.getCoins():
             if coin.getValue() > 0:
-                frmLoad = FrameLoad(frame, coin, 'Moneda')
-                self.coinFrames.append(frmLoad)
-                frmLoad.grid()
-        frmTotal = FrameTotalLoad(frame, self.coinFrames, 'MONEDAS')
+                frmView = FrameView(frame, coin, 'Monedas')
+                self.coinFrames.append(frmView)
+                frmView.grid()
+        frmTotal = FrameTotalView(frame, self.refRegister, COIN)
         frmTotal.grid()
 
     # F: Inicializa apartado de billetes
@@ -137,69 +128,23 @@ class LoadWindow():
         self.billFrames = []
         for bill in self.refRegister.getBills():
             if bill.getValue() > 0:
-                frmLoad = FrameLoad(frame, bill, 'Billete')
-                self.billFrames.append(frmLoad)
-                frmLoad.grid()
-        frmTotal = FrameTotalLoad(frame, self.billFrames, 'BILLETES')
+                frmView = FrameView(frame, bill, 'Billetes')
+                self.billFrames.append(frmView)
+                frmView.grid()
+        frmTotal = FrameTotalView(frame, self.refRegister, BILL)
         frmTotal.grid()
 
-    # F: Validacion colectiva de entradas
-    # I: Self
-    # O: Bool
-    def validateInputs(self) -> bool:
-        for frame in self.coinFrames:
-            if not frame.validateInput():
-                return False
-        for frame in self.billFrames:
-            if not frame.validateInput():
-                return False
-        return True
-
     # F: Asigna comandos a botones del menu
-    # I: Self - Instancia de LoadWindow
+    # I: Self - Instancia de RegisterWindow
     # O: N/a
     def initCommands(self):
         self.btnOk.config(command=self.btnOkCommand)
-        self.btnCancel.config(command=self.btnCancelCommand)
-        self.btnEmpty.config(command=self.btnEmptyCommand)
-
     
     # F: Funcionalidad de btnOk
-    # I: Self - Instancia de LoadWindow
+    # I: Self - Instancia de RegisterWindow
     # O: N/a
     def btnOkCommand(self):
-        if not self.validateInputs():
-            errorBox(self.root, 'Cajero', 'Debe ingresar valores validos')
-            return
-        for frame in self.coinFrames:
-            frame.commitInput()
-        for frame in self.billFrames:
-            frame.commitInput()
         self.root.destroy()
-
-    # F: Funcionalidad de btnCancel
-    # I: Self - Instancia de LoadWindow
-    # O: N/a
-    def btnCancelCommand(self):
-        self.root.destroy()
-
-    # F: Funcionalidad de btnSearch
-    # I: Self - Instancia de LoadWindow
-    # O: N/a
-    def btnEmptyCommand(self):
-        self.refRegister.emptyAll()
-        for frame in self.coinFrames:
-            frame.setEmpty()
-        for frame in self.billFrames:
-            frame.setEmpty()
-        self.enableEmpty()
-
-    # F: Habilita/deshabilita boton vaciar cajero
-    # I: Self
-    # O: N/a
-    def enableEmpty(self):
-        state = ('normal', 'disabled')[self.refRegister.isEmpty()]
-        self.btnEmpty.config(state=state)
 
 ################
 # main program #

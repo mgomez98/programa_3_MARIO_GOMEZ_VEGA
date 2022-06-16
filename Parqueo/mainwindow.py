@@ -11,11 +11,12 @@
 # TO DO Acerca de #mecago en william
 
 import tkinter as tk
+
 from jsonUtils import *
 
 from ConfigWindow import ConfigWindow
 from LoadWindow import LoadWindow
-#from BalanceWindow import BalanceWindow
+from RegisterWindow import RegisterWindow
 from EarningsWindow import EarningsWindow
 from EntryWindow import EntryWindow
 # Cajero TO DO
@@ -153,7 +154,7 @@ class MainWindow():
     # I: Self - Instancia de MainWindow
     # O:
     def btnBalanceCommand(self):
-        print('saldo del cajero')
+        self.toplevel = RegisterWindow(self.root, self.register)
 
     # F: Funcionalidad de btnEarnings
     # I: Self - Instancia de MainWindow

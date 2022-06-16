@@ -11,6 +11,7 @@
 import tkinter as tk
 
 from Denomination import Denomination, INPUT, OUTPUT, TOTAL
+from FrameTotalLoad import FrameTotalLoad
 
 ###########
 # classes #
@@ -33,6 +34,8 @@ class FrameLoad(tk.Frame):
     countTotal = None # lbl
     valueTotal = None # lbl
 
+    refTotalSibling = None # FrameTotalLoad
+
     def __init__(self, master, denomination: Denomination, name: str):
         super().__init__(master, bg='#c9c9c9')
         
@@ -41,14 +44,15 @@ class FrameLoad(tk.Frame):
 
         # Frame
         self.config(width=610, height=20)
-        countStart = self.refDenomination.getAmount(TOTAL)
-        valueStart = self.refDenomination.getValueByType(TOTAL)
+        countStart = self.getSavedAmount()
+        valueStart = self.getSavedValue()
         self.title = tk.Label(self, text=f'{name} de {self.refDenomination.getValue()}', bg='#c9c9c9')
 
         self.countPrev = tk.Label(self, text=countStart, bg='#c9c9c9')
         self.valuePrev = tk.Label(self, text=valueStart, bg='#c9c9c9')
 
         self.countLoad = tk.Entry(self, width=9, justify='right')
+        self.countLoad.insert(0, '0')
         self.valueLoad = tk.Label(self, text='—', bg='#c9c9c9')
 
         self.countTotal = tk.Label(self, text=countStart, bg='#c9c9c9')
@@ -84,6 +88,7 @@ class FrameLoad(tk.Frame):
             amountInput = int(self.countLoad.get())
             self.updateLoad(amountInput)
             self.updateTotal(amountInput)
+        self.refTotalSibling.updateDisplay()
 
     # F: Actualiza carga de dinero
     # I: Self, valores nuevos
@@ -96,9 +101,8 @@ class FrameLoad(tk.Frame):
     # I: Self, valores nuevos
     # O: N/a
     def updateTotal(self, amount: int):
-        countTotal = self.refDenomination.getAmount(TOTAL) + amount
-        valueTotal = self.refDenomination.getValueByType(TOTAL)\
-                     + self.refDenomination.calculateTotalValue(amount)
+        countTotal = self.getInputTotal(amount)
+        valueTotal = self.getValueTotal(amount)
         self.countTotal.config(text=countTotal)
         self.valueTotal.config(text=valueTotal)
 
@@ -115,6 +119,57 @@ class FrameLoad(tk.Frame):
     def commitInput(self):
         amountInput = int(self.countLoad.get())
         self.refDenomination.increaseAmount(amountInput)
+
+    # F: Getter de carga previa (cantidad)
+    # I: Self
+    # O: int
+    def getSavedAmount(self):
+        return self.refDenomination.getAmount(TOTAL)
+
+    # F: Getter de carga previa (valor)
+    # I: Self
+    # O: int
+    def getSavedValue(self):
+        return self.refDenomination.getValueByType(TOTAL)
+
+    # F: Getter de entrada de usuario
+    # I: Self
+    # O: int
+    def getInput(self):
+        return int(self.countLoad.get())
+
+    # F: Getter de valor de entrada
+    # I: Self
+    # O: int
+    def getInputValue(self):
+        return self.refDenomination.calculateTotalValue(self.getInput())
+
+    # F: Setter de FrameTotalLoad hermano
+    # I: Self, instancia de FrameTotalLoad
+    # O: N/a
+    def setSibling(self, frame: FrameTotalLoad):
+        self.refTotalSibling = frame
+
+    # F: Getter de carga estimada
+    # I: Self, cantidad cargada
+    # O: int
+    def getInputTotal(self, amount: int):
+        return self.getSavedAmount() + amount
+
+    # F: Getter de valor estimado
+    # I: Self, cantidad cargada
+    # O: int
+    def getValueTotal(self, amount: int):
+        return self.getSavedValue() + self.refDenomination.calculateTotalValue(amount)
+
+    # F: Vacia datos del frame
+    # I: Self
+    # O: N/a
+    def setEmpty(self):
+        inputSize = len(self.countLoad.get())
+        self.countLoad.delete(0, inputSize)
+        self.countLoad.insert(0, '0')
+        self.updateDisplay()
 
 ################
 # main program #
