@@ -16,10 +16,10 @@ from jsonUtils import *
 
 from ConfigWindow import ConfigWindow
 from LoadWindow import LoadWindow
-from RegisterWindow import RegisterWindow
+from BalanceWindow import BalanceWindow
 from EarningsWindow import EarningsWindow
 from EntryWindow import EntryWindow
-# Cajero TO DO
+from RegisterWindow import RegisterWindow
 from ExitWindow import ExitWindow
 
 ###########
@@ -66,7 +66,7 @@ class MainWindow():
         self.frame = tk.Frame(self.root)
 
         # Widgets locales
-        lblTitle = tk.Label(self.root, text='Parqueo', font=('Times New Roman', 26), bg='#c8c8c8')
+        lblTitle = tk.Label(self.root, text='Parqueo', font=('Times New Roman', 26), bg='#c9c9c9')
 
         # Botones
         self.btnConfig = tk.Button(self.frame, text='Configuracion',\
@@ -154,7 +154,7 @@ class MainWindow():
     # I: Self - Instancia de MainWindow
     # O:
     def btnBalanceCommand(self):
-        self.toplevel = RegisterWindow(self.root, self.register)
+        self.toplevel = BalanceWindow(self.root, self.register)
 
     # F: Funcionalidad de btnEarnings
     # I: Self - Instancia de MainWindow
@@ -172,7 +172,7 @@ class MainWindow():
     # I: Self - Instancia de MainWindow
     # O:
     def btnRegisterCommand(self):
-        print('cajero del parqueo')
+        self.toplevel = RegisterWindow(self.root, self.register, self.parking)
 
     # F: Funcionalidad de btnExit
     # I: Self - Instancia de MainWindow

@@ -20,12 +20,17 @@ def getTimeString(timeFloat: float) -> str:
     timeStruct = time.localtime(timeFloat)
     return time.strftime("%H:%M - %d/%m/%Y", timeStruct)
 
+# F: Obtiene str de tiempo
+# I: segundos en formato float
+# O: str de tiempo
+def getTimeBill(timeFloat: float) -> str:
+    return f"{getHours(timeFloat)}h    {getMinutes(timeFloat)}m    {getDays(timeFloat)}d"
+
 # F: Obtiene str de tiempo sobre el limite
 # I: timeFloat - segundos en formato float
 # O: Str de tiempo
 def getTimeTaken(timeFloat: float) -> str:
-    timeStruct = time.localtime(timeFloat)
-    return time.strftime("%M minutos", timeStruct)
+    return f"{getRawMinutes(timeFloat)} minutos"
 
 # F: Valida conversion de fecha str a float de segundos
 # I: str de fecha
@@ -48,3 +53,27 @@ def validateDateString(date: str) -> float:
         return date
     except ValueError:
         return None
+
+# F: Obtiene dias
+# I: segundos como float
+# O: int de dias
+def getDays(timeFloat: float) -> int:
+    return int(timeFloat // 86400)
+
+# F: Obtiene horas
+# I: segundos como float
+# O: int de horas
+def getHours(timeFloat: float) -> int:
+    return int(( timeFloat % 86400 ) // 3600)
+
+# F: Obtiene minutos
+# I: segundos como float
+# O: int de minutos
+def getMinutes(timeFloat: float) -> int:
+    return int(( ( timeFloat % 86400 ) % 3600 ) // 60)
+
+# F: Obtiene total de tiempo como minutos
+# I: segundos como float
+# O: int de minutos
+def getRawMinutes(timeFloat: float) -> int:
+    return int(timeFloat // 60)
