@@ -10,11 +10,20 @@
 
 import tkinter as tk
 
+from CashRegister import CashRegister
+from ParkingLot import ParkingLot
+from timeUtils import validateDateString, getTimeFloat
+from msgUtils import *
+
 ###########
 # classes #
 ###########
 
 class EarningsWindow():
+    # Logica parqueo
+    refRegister = None
+    refParking = None
+
     # Ventana y widgets
     root = None              # Tkinter toplevel
     fromDate = None          # Entry inicio fecha
@@ -27,10 +36,13 @@ class EarningsWindow():
 
     btnOk = None             # Boton OK
 
-    def __init__(self):
+    def __init__(self, parent, register: CashRegister, parking: ParkingLot):
+
+        self.refRegister = register
+        self.refParking = parking
         
         # Ventana Ingresos
-        self.root = tk.Tk()
+        self.root = tk.Toplevel(parent)
         self.root.geometry('400x250')
         self.root.title('Ingresos de Dinero')
         self.root.config(bg='#c9c9c9')
@@ -90,9 +102,6 @@ class EarningsWindow():
         # Comandos
         self.initCommands()
 
-        # Mainloop
-        self.root.mainloop()
-
 #############
 #  methods  #
 #############
@@ -102,12 +111,33 @@ class EarningsWindow():
     # O: N/a
     def initCommands(self):
         self.btnOk.config(command=self.btnOkCommand)
+        self.fromDate.bind('<Return>', lambda e: self.searchLog())
+        self.untilDate.bind('<Return>', lambda e: self.searchLog())
 
     # F: Funcionalidad de btnOk
     # I: Self - Instancia de Earnings
     # O: 
     def btnOkCommand(self):
-        print('Ok')
+        self.root.destroy()
+
+    # F:
+    # I:
+    # O:
+    def searchLog(self):
+        fromDate = validateDateString(self.fromDate.get())
+        untilDate = validateDateString(self.untilDate.get())
+        if fromDate == None or untilDate == None:
+            errorBox(self.root, 'Parqueo', 'Ingrese fechas validas')
+            return
+        self.displayEarnings(fromDate, untilDate)
+
+    # F:
+    # I:
+    # O:
+    def displayEarnings(self, fromDate: float, untilDate: float):
+        pendingVehicles = self.refParking.getPendingVehicles()
+        self.totalEarnings.config(text=self.refParking.getTotalEarnings(fromDate, untilDate))
+        self.estimateEarnings.config(text=self.refRegister.getEstimatedEarnings(pendingVehicles, getTimeFloat(), self.refParking.getHourlyRate(), self.refParking.getMinRate()))
 
 ################
 # main program #

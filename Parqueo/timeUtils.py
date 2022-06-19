@@ -72,8 +72,21 @@ def getHours(timeFloat: float) -> int:
 def getMinutes(timeFloat: float) -> int:
     return int(( ( timeFloat % 86400 ) % 3600 ) // 60)
 
+# F: Obtiene total de tiempo como horas
+# I: segundos como float
+# O: int de horas
+def getRawHours(timeFloat: float) -> int:
+    return int(timeFloat // 3600)
+
 # F: Obtiene total de tiempo como minutos
 # I: segundos como float
 # O: int de minutos
 def getRawMinutes(timeFloat: float) -> int:
     return int(timeFloat // 60)
+
+# F: Obtiene str de tiempo
+# I: timeFloat - segundos en formato float
+# O: Str de tiempo
+def getFileTime(timeFloat: float) -> str:
+    timeStruct = time.localtime(timeFloat)
+    return time.strftime("%Hh%Mm_%d%m%Y", timeStruct)

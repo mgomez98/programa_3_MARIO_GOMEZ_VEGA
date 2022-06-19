@@ -160,7 +160,7 @@ class MainWindow():
     # I: Self - Instancia de MainWindow
     # O:
     def btnEarningsCommand(self):
-        print('ingresos de dinero')
+        self.toplevel = EarningsWindow(self.root, self.register, self.parking)
 
     # F: Funcionalidad de btnEntry
     # I: Self - Instancia de MainWindow

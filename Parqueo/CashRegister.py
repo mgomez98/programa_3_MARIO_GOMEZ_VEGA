@@ -9,6 +9,8 @@
 ###########
 
 from Denomination import Denomination, INPUT, OUTPUT, TOTAL
+from Vehicle import Vehicle
+from timeUtils import getRawHours
 
 ###########
 # classes #
@@ -155,6 +157,86 @@ class CashRegister():
     # O: Retorna valor de billetes
     def getTotalBillValue(self, type: int) -> int:
         return self.__countValue(self.bills, type)
+
+    # F: Calcula cobro tentativo
+    # I: self, instancia vehicle, float tiempo cobrado, float costo por hora, float costo minimo
+    # O: cobro tentativo
+    def calculateBill(self, vehicle: Vehicle, payTime: float, hourlyRate: float, minRate: float) -> int:
+        timeDelta = payTime - vehicle.getEntryTime()
+        hours = getRawHours(timeDelta)
+        if hours < 1:
+            return minRate
+        return hours * hourlyRate
+
+    # F:
+    # I:
+    # O:
+    def calculatePayment(self, coinInputs: list, billInputs: list) -> int:
+        total = 0
+        for index, quantity in enumerate(coinInputs):
+            total += self.coins[index].calculateTotalValue(quantity)
+        for index, quantity in enumerate(billInputs):
+            total += self.bills[index].calculateTotalValue(quantity)
+        return total
+
+    # F:
+    # I:
+    # O:
+    def calculateChange(self, payment: int) -> tuple:
+        coinOutputs = []
+        billOutputs = []
+        for bill in self.bills[::-1]:
+            if bill.getValue() == 0:
+                continue
+            quantity = int(payment // bill.getValue())
+            if quantity <= bill.getAmount(INPUT):
+                payment -= bill.calculateTotalValue(quantity)
+                billOutputs.insert(0, quantity)
+
+        for coin in self.coins[::-1]:
+            if coin.getValue() == 0:
+                continue
+            quantity = int(payment // coin.getValue())
+            if quantity <= coin.getAmount(INPUT):
+                payment -= coin.calculateTotalValue(quantity)
+                coinOutputs.insert(0, quantity)
+        return coinOutputs, billOutputs
+
+    # F:
+    # I:
+    # O:
+    def commitInputs(self, coinInputs: list, billInputs: list):
+        for index, quantity in enumerate(coinInputs):
+            self.coins[index].increaseAmount(quantity)
+
+        for index, quantity in enumerate(billInputs):
+            self.bills[index].increaseAmount(quantity)
+
+    # F:
+    # I:
+    # O:
+    def commitOutputs(self, coinOutputs: list, billOutputs: list):
+        for index, quantity in enumerate(coinOutputs):
+            self.coins[index].decreaseAmount(quantity)
+
+        for index, quantity in enumerate(billOutputs):
+            self.bills[index].decreaseAmount(quantity)
+
+    # F:
+    # I:
+    # O:
+    def isChangePossible(self, change: int):
+        return change <= ( self.getTotalCoinValue(TOTAL) + self.getTotalBillValue(TOTAL) )
+
+    # F:
+    # I:    vehicleList (Vehiculos que no han pagado)
+    #       estimatedTime (float de tiempo a calcular)
+    # O:
+    def getEstimatedEarnings(self, vehicles: list, estimatedTime: float, hourlyRate: float, minRate: float) -> float:
+        total = 0
+        for vehicle in vehicles:
+            total += self.calculateBill(vehicle, estimatedTime, hourlyRate, minRate)
+        return total
 
 ################
 # main program #

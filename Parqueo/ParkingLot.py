@@ -212,17 +212,33 @@ class ParkingLot():
     def isTimeUp(self, vehicle: Vehicle) -> bool:
         return vehicle.getTimeDelta() >= (self.max_minutes * 60)
 
-    # F:
-    # I:    vehicleList (Vehiculos que no han pagado)
-    #       estimatedTime (float de tiempo a calcular)
-    # O:
-    def getEstimatedEarnings() -> float:
-        pass # TO DO: Pasar funcion a cajero
+    # F: Calcula ganancias totales
+    # I: Self, inicio y final del rango (floats)
+    # O: int
+    def getTotalEarnings(self, rangeStart: float, rangeEnd: float) -> int:
+        total = 0
+        for vehicle in self.log:
+            time = vehicle.getPayTime()
+            if time <= (rangeEnd+86400) and time >= rangeStart:
+                total += vehicle.getBilling()
+        for vehicle in self.lots.values():
+            time = vehicle.getPayTime()
+            if time == None:
+                continue
+            if time <= (rangeEnd+86400) and time >= rangeStart and vehicle.hasPaid():
+                total += vehicle.getBilling()
+        return total
 
-    # Crear metodos para lo siguiente:
-    #   Metodo iterativo que obtiene listado de vehiculos
-    #   que no han pagado
-
+    # F: Obtiene vehiculos pendientes de pago
+    # I: Self
+    # O: lista de vehiculos
+    def getPendingVehicles(self) -> list:
+        result = []
+        for vehicle in self.lots.values():
+            if not vehicle.hasPaid():
+                result.append(vehicle)
+        return result
+        
 ################
 # main program #
 ################

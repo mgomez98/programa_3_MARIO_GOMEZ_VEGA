@@ -99,6 +99,12 @@ class Vehicle():
     def setExitTime(self, exitTime: float):
         self.exitTime = exitTime
 
+    # F:
+    # I:
+    # O:
+    def getBilling(self):
+        return self.billing
+
     # F: Asigna valor de billing
     # I: Self - Instancia de Vehicle, billing - float
     # O: N/a
