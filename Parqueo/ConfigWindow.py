@@ -230,9 +230,9 @@ class ConfigWindow():
         self.refParking.setManagerMail( self.entMail.get() )
         self.refParking.setMaxMinutes( int(self.entMinutes.get()) )
 
-    # F:
-    # I:
-    # O:
+    # F: 
+    # I: 
+    # O: 
     def validateParkingConfig(self) -> bool: # TO DO
         return True
 

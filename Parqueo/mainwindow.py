@@ -21,6 +21,7 @@ from EarningsWindow import EarningsWindow
 from EntryWindow import EntryWindow
 from RegisterWindow import RegisterWindow
 from ExitWindow import ExitWindow
+from About import About
 
 ###########
 # classes #
@@ -45,6 +46,8 @@ class MainWindow():
     btnRegister = None  # Boton cajero
     btnExit = None      # Boton salida vehiculo
     btnHelp = None      # Boton ayuda
+    btnAbout = None     # Boton acerca de
+    btnClose = None     # Boton salir
 
     # Toplevel
     toplevel = None  # Toplevel activo
@@ -57,7 +60,7 @@ class MainWindow():
         
         # Ventana principal
         self.root = tk.Tk()
-        self.root.geometry('280x420')
+        self.root.geometry('280x480')
         self.root.title('Parqueo')
         self.root.config(bg='#c9c9c9')
         self.root.protocol("WM_DELETE_WINDOW", self.closeWindow)
@@ -93,6 +96,12 @@ class MainWindow():
         self.btnHelp = tk.Button(self.frame, text='Ayuda',\
                                     anchor='center', width=16, height=2)
 
+        self.btnAbout = tk.Button(self.frame, text='Acerca De',\
+                                    anchor='center', width=16, height=2)
+
+        self.btnClose = tk.Button(self.frame, text='Salir',\
+                                    anchor='center', width=16, height=2)
+
         # Posicionamiento
         lblTitle.place(anchor='n', relx=0.5, rely=0.005)
 
@@ -106,6 +115,8 @@ class MainWindow():
         self.btnRegister.grid(row=5, column=1)
         self.btnExit.grid(row=6, column=1)
         self.btnHelp.grid(row=7, column=1)
+        self.btnAbout.grid(row=8, column=1)
+        self.btnClose.grid(row=9, column=1)
 
         # Comandos
         self.initCommands()
@@ -129,6 +140,8 @@ class MainWindow():
         self.btnRegister.config(command=self.btnRegisterCommand)
         self.btnExit.config(command=self.btnExitCommand)
         self.btnHelp.config(command=self.btnHelpCommand)
+        self.btnAbout.config(command=self.btnAboutCommand)
+        self.btnClose.config(command=self.btnCloseCommand)
 
     # F: Cierra ventana y guarda cambios
     # I: Self - Instancia de MainWindow
@@ -140,51 +153,63 @@ class MainWindow():
 
     # F: Funcionalidad de btnConfig
     # I: Self - Instancia de MainWindow
-    # O: 
+    # O: N/a
     def btnConfigCommand(self):
         self.toplevel = ConfigWindow(self.root, self.parking, self.register)
 
     # F: Funcionalidad de btnLoad
     # I: Self - Instancia de MainWindow
-    # O:
+    # O: N/a
     def btnLoadCommand(self):
         self.toplevel = LoadWindow(self.root, self.register)
 
     # F: Funcionalidad de btnBalance
     # I: Self - Instancia de MainWindow
-    # O:
+    # O: N/a
     def btnBalanceCommand(self):
         self.toplevel = BalanceWindow(self.root, self.register)
 
     # F: Funcionalidad de btnEarnings
     # I: Self - Instancia de MainWindow
-    # O:
+    # O: N/a
     def btnEarningsCommand(self):
         self.toplevel = EarningsWindow(self.root, self.register, self.parking)
 
     # F: Funcionalidad de btnEntry
     # I: Self - Instancia de MainWindow
-    # O:
+    # O: N/a
     def btnEntryCommand(self):
         self.toplevel = EntryWindow(self.root, self.parking)
 
     # F: Funcionalidad de btnRegister
     # I: Self - Instancia de MainWindow
-    # O:
+    # O: N/a
     def btnRegisterCommand(self):
         self.toplevel = RegisterWindow(self.root, self.register, self.parking)
 
     # F: Funcionalidad de btnExit
     # I: Self - Instancia de MainWindow
-    # O:
+    # O: N/a
     def btnExitCommand(self):
         self.toplevel = ExitWindow(self.root, self.parking)
 
     # F: Funcionalidad de btnHelp
     # I: Self - Instancia de MainWindow
-    # O:
+    # O: N/a
     def btnHelpCommand(self):
         print('ayuda')
+
+    # F: Funcionalidad de btnAbout
+    # I: Self - Instancia de MainWindow
+    # O: N/a
+    def btnAboutCommand(self):
+        self.toplevel = About(self.root)
+
+    # F: Funcionalidad de btnClose
+    # I: Self - Instancia de MainWindow
+    # O: N/a
+    def btnCloseCommand(self):
+        self.closeWindow()
 
 ################
 # main program #

@@ -120,9 +120,9 @@ class EarningsWindow():
     def btnOkCommand(self):
         self.root.destroy()
 
-    # F:
-    # I:
-    # O:
+    # F: Busca datos en el historial
+    # I: Self
+    # O: N/a
     def searchLog(self):
         fromDate = validateDateString(self.fromDate.get())
         untilDate = validateDateString(self.untilDate.get())
@@ -131,9 +131,9 @@ class EarningsWindow():
             return
         self.displayEarnings(fromDate, untilDate)
 
-    # F:
-    # I:
-    # O:
+    # F: Muestra ganancias
+    # I: Self, floats de tiempo
+    # O: N/a
     def displayEarnings(self, fromDate: float, untilDate: float):
         pendingVehicles = self.refParking.getPendingVehicles()
         self.totalEarnings.config(text=self.refParking.getTotalEarnings(fromDate, untilDate))

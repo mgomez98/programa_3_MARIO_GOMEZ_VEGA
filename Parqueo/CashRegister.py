@@ -168,9 +168,9 @@ class CashRegister():
             return minRate
         return hours * hourlyRate
 
-    # F:
-    # I:
-    # O:
+    # F: Calcula acumulado de pago
+    # I: Self, listas de monedas y billetes
+    # O: int
     def calculatePayment(self, coinInputs: list, billInputs: list) -> int:
         total = 0
         for index, quantity in enumerate(coinInputs):
@@ -179,9 +179,9 @@ class CashRegister():
             total += self.bills[index].calculateTotalValue(quantity)
         return total
 
-    # F:
-    # I:
-    # O:
+    # F: Calcula desglose de cambio
+    # I: Self, int de pago
+    # O: tupla
     def calculateChange(self, payment: int) -> tuple:
         coinOutputs = []
         billOutputs = []
@@ -202,9 +202,9 @@ class CashRegister():
                 coinOutputs.insert(0, quantity)
         return coinOutputs, billOutputs
 
-    # F:
-    # I:
-    # O:
+    # F: Guarda ingresos
+    # I: Self, listas de ingresos
+    # O: N/a
     def commitInputs(self, coinInputs: list, billInputs: list):
         for index, quantity in enumerate(coinInputs):
             self.coins[index].increaseAmount(quantity)
@@ -212,9 +212,9 @@ class CashRegister():
         for index, quantity in enumerate(billInputs):
             self.bills[index].increaseAmount(quantity)
 
-    # F:
-    # I:
-    # O:
+    # F: Guarda salidas de dinero
+    # I: Self, listas de salidas
+    # O: N/a
     def commitOutputs(self, coinOutputs: list, billOutputs: list):
         for index, quantity in enumerate(coinOutputs):
             self.coins[index].decreaseAmount(quantity)
@@ -222,16 +222,15 @@ class CashRegister():
         for index, quantity in enumerate(billOutputs):
             self.bills[index].decreaseAmount(quantity)
 
-    # F:
-    # I:
-    # O:
-    def isChangePossible(self, change: int):
+    # F: Verifica si es posible retornar cambio
+    # I: Self, cambio solicitado
+    # O: bool
+    def isChangePossible(self, change: int) -> bool:
         return change <= ( self.getTotalCoinValue(TOTAL) + self.getTotalBillValue(TOTAL) )
 
-    # F:
-    # I:    vehicleList (Vehiculos que no han pagado)
-    #       estimatedTime (float de tiempo a calcular)
-    # O:
+    # F: Obtiene ingresos estimados
+    # I: Self, lista de vehiculos, floats de: tiempo estimado, costo por hora y costo minimo
+    # O: Float de ingresos estimados
     def getEstimatedEarnings(self, vehicles: list, estimatedTime: float, hourlyRate: float, minRate: float) -> float:
         total = 0
         for vehicle in vehicles:
