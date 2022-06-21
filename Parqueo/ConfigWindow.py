@@ -10,6 +10,8 @@
 
 import tkinter as tk
 from msgUtils import *
+import pyisemail
+from re import match
 
 from CashRegister import CashRegister
 from ParkingLot import ParkingLot
@@ -230,10 +232,38 @@ class ConfigWindow():
         self.refParking.setManagerMail( self.entMail.get() )
         self.refParking.setMaxMinutes( int(self.entMinutes.get()) )
 
-    # F: 
-    # I: 
-    # O: 
-    def validateParkingConfig(self) -> bool: # TO DO
+    # F: Verifica si un numero en un string es un flotante
+    # I: Self, string
+    # O: bool
+    def isFloat(self, string):
+        if match('\d+\.\d+', string):
+            return True
+        return False
+
+    # F: Valida configuracion de parqueo
+    # I: Self
+    # O: bool
+    def validateParkingConfig(self) -> bool:
+        entLots = self.entLots.get()
+        entHourly = self.entHourly.get()
+        entMin = self.entMin.get()
+        entMail = self.entMail.get()
+        entMinutes = self.entMinutes.get()
+        '''print(not (entLots.isnumeric() and entHourly.isnumeric()\
+            and entMin.isnumeric() and entMinutes.isnumeric()))
+        print((entLots.isnumeric(), entHourly.isdecimal(), entMin.isdecimal(), entMinutes.isnumeric()))'''
+
+        if not (entLots.isnumeric() and self.isFloat(entHourly)\
+            and self.isFloat(entMin) and entMinutes.isnumeric()):
+            errorBox(self.root, 'Configuracion Parqueo', 'Debe dar entradas validas')
+            return False
+        if not pyisemail.is_email(entMail, True):
+            errorBox(self.root, 'Configuracion Parqueo', 'Ingrese un correo valido')
+            return False
+        if int(entLots) < 1 or float(entHourly) < 0 or float(entMin) < 0\
+            or int(entMinutes) < 0:
+            errorBox(self.root, 'Configuracion Parqueo', 'Debe dar entradas validas')
+            return False
         return True
 
     # F: Habilita entries de configuracion (cajero)
@@ -286,18 +316,46 @@ class ConfigWindow():
              int(self.entBill5.get())]
         )
 
-    # F:
-    # I:
-    # O:
-    def validateRegisterConfig(self) -> bool: # TO DO
+    # F: Valida configuracion de cajero
+    # I: Self
+    # O: bool
+    def validateRegisterConfig(self) -> bool:
+        entCoins = (self.entCoin1.get(), self.entCoin2.get(), self.entCoin3.get())
+        entBills = (self.entBill1.get(), self.entBill2.get(), self.entBill3.get(),\
+                    self.entBill4.get(), self.entBill5.get())
+        if not self.validateDenomination(entCoins):
+            return False
+        if not self.validateDenomination(entBills):
+            return False
+        return True
+
+    # F: Valida denominaciones
+    # I: Self, tupla de denominaciones
+    # O: bool
+    def validateDenomination(self, moneyTuple):
+        hasZero = False
+        prevEntry = '0'
+        for coin in moneyTuple:
+            if not coin.isnumeric():
+                errorBox(self.root, 'Configuracion Cajero', 'Debe dar entradas validas')
+                return False
+            if int(coin) == 0:
+                hasZero = True
+            if int(coin) != 0 and hasZero:
+                errorBox(self.root, 'Configuracion Cajero', 'Denominaciones despues de una omision deben ser 0')
+                return False
+            if not hasZero and int(coin) <= int(prevEntry):
+                errorBox(self.root, 'Configuracion Cajero', 'Denominaciones deben seguir orden ascendente')
+                return False
+            prevEntry = coin
         return True
 
     # F: Funcionalidad de btnOk
     # I: Self - Instancia de Config
     # O: N/a
-    def btnOkCommand(self): # TO DO Desarrollar metodos validacion
-        isParkingConfigValid = self.validateParkingConfig
-        isRegisterConfigValid = self.validateRegisterConfig
+    def btnOkCommand(self):
+        isParkingConfigValid = self.validateParkingConfig()
+        isRegisterConfigValid = self.validateRegisterConfig()
         if isParkingConfigValid:
             self.saveParkingConfig()
         if isRegisterConfigValid:

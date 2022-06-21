@@ -8,11 +8,10 @@
 # modules #
 ###########
 
-# TO DO Acerca de #mecago en william
-
 import tkinter as tk
 
 from jsonUtils import *
+import os
 
 from ConfigWindow import ConfigWindow
 from LoadWindow import LoadWindow
@@ -197,7 +196,7 @@ class MainWindow():
     # I: Self - Instancia de MainWindow
     # O: N/a
     def btnHelpCommand(self):
-        print('ayuda')
+        os.system('manual_de_usuario_parqueo.pdf')
 
     # F: Funcionalidad de btnAbout
     # I: Self - Instancia de MainWindow
